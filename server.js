@@ -71,7 +71,7 @@ app.post('/submit-form', (req, res) => {
             if (err) {
                 console.error(err);
             } else {
-                console.log("success!");
+                console.log("copied file success!");
             }
         })
         processFile(newPath);
