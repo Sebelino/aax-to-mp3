@@ -34,15 +34,15 @@ function getChecksum(path) {
 
         var checksum;
         sed.stdout.on('data', function(data) {
-            console.log("GOT SOME DATA");
+            console.log("sed GOT SOME DATA");
             checksum = data;
         });
         sed.on('close', function(code) {
-            console.log("RESOLVING");
+            console.log("sed close code", code);
             resolve(checksum.toString().trim());
         });
         sed.on('error', function(err) {
-            console.log("ONE MORE CALL REJECTED");
+            console.log("sed ONE MORE CALL REJECTED");
             reject(err);
         });
     });
