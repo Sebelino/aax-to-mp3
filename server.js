@@ -21,45 +21,70 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-async function getChecksum(path) {
-    console.log("Processing file:", path);
+function getChecksum(path) {
+    return new Promise((resolve, reject) => {
+        console.log("Processing file:", path);
 
-    const ffprobe = spawn('ffprobe', ['-loglevel', 'debug', path]);
-    const grep = spawn('grep', ['checksum']);
-    const sed = spawn('sed', ['s/.*checksum == \\(\\w*\\)/\\1/']);
+        const ffprobe = spawn('ffprobe', ['-loglevel', 'debug', path]);
+        const grep = spawn('grep', ['checksum']);
+        const sed = spawn('sed', ['s/.*checksum == \\(\\w\\+\\)/\\1/']);
 
-    ffprobe.stderr.pipe(grep.stdin)
-    grep.stdout.pipe(sed.stdin)
+        ffprobe.stderr.pipe(grep.stdin)
+        grep.stdout.pipe(sed.stdin)
 
-    var checksum;
-    for await (const data of sed.stdout) {
-        checksum = data;
-    }
-    return checksum;
+        var checksum;
+        sed.stdout.on('data', function(data) {
+            console.log("GOT SOME DATA");
+            checksum = data;
+        });
+        sed.on('close', function(code) {
+            console.log("RESOLVING");
+            resolve(checksum.toString().trim());
+        });
+        sed.on('error', function(err) {
+            console.log("ONE MORE CALL REJECTED");
+            reject(err);
+        });
+    });
 }
 
-async function getActivationBytes(path, checksum) {
-    console.log(`checksum is [${checksum}]`)
-    // TODO find a way to trim checksum in getChecksum(...)
-    const rcrack = spawn('./rcrack', ['.', '-h', checksum.trim()]);
+async function getActivationBytes(checksum) {
+    return new Promise((resolve, reject) => {
+        const rcrack = spawn('./rcrack', ['.', '-h', checksum]);
+        const grep = spawn('grep', ['hex:']);
+        const sed = spawn('sed', ['s/.*hex:\\(\\w\\+\\)/\\1/']);
 
-    var activationBytes;
-    for await (const data of rcrack.stdout) {
-        console.log(data);
-        activationBytes = data;
-    }
-    return activationBytes;
-    //for await (const data of rcrack.stderr) {
-    //    return data;
-    //}
+        rcrack.stdout.pipe(grep.stdin);
+        grep.stdout.pipe(sed.stdin);
+
+        var activationBytes;
+        sed.stdout.on('data', function(data) {
+            activationBytes = data;
+        });
+        sed.on('close', function(code) {
+            resolve(activationBytes.toString().trim());
+        });
+    });
+}
+
+async function processChecksum(checksum) {
+    process.chdir('tables');
+
+    console.log("Computing activation bytes...");
+    const activationBytesPromise = getActivationBytes(checksum);
+
+    activationBytesPromise.then(function(activationBytes) {
+        console.log(`Activation bytes: ${activationBytes}`);
+    });
 }
 
 async function processFile(path) {
-    const checksum = await getChecksum(path);
-    console.log(`Checksum from ffprobe: ${checksum}`);
-    process.chdir('tables');
-    const activationBytes = await getActivationBytes(path, checksum);
-    console.log(`Activation bytes: ${activationBytes}`);
+    const checksumPromise = getChecksum(path);
+
+    checksumPromise.then(function(checksum) {
+        console.log("Checksum from ffprobe", checksum);
+        processChecksum(checksum);
+    });
 }
 
 app.post('/submit-form', (req, res) => {
