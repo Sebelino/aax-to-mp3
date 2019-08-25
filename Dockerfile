@@ -9,10 +9,13 @@ RUN apt-get -y install yasm nasm \
                 wget \
                 time
 RUN apt-get -y install checkinstall
+
+RUN apt-get -y install libmp3lame-dev
+
 RUN wget https://www.ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2
 RUN tar jxvf ffmpeg-snapshot.tar.bz2
 RUN cd ffmpeg && \
-    ./configure --prefix=/usr && \
+    ./configure --prefix=/usr --enable-gpl --enable-libmp3lame --enable-shared && \
     time make -j 8 && \
     cat RELEASE && \
     checkinstall
@@ -41,6 +44,7 @@ RUN apt-get -y install nodejs
 WORKDIR /usr/src/app
 
 RUN git clone https://github.com/inAudible-NG/tables
+RUN git clone https://github.com/KrumpetPirate/AAXtoMP3
 
 COPY package*.json ./
 
@@ -67,6 +71,8 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | ba
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
+RUN apt-get -y install bc
 
 # Bundle app source
 COPY . .

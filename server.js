@@ -78,7 +78,24 @@ async function getActivationBytes(checksum) {
     });
 }
 
-async function processChecksum(checksum) {
+async function processActivationBytes(activationBytes, path) {
+    process.chdir('../AAXtoMP3');
+
+    console.log("Running AAXtoMp3...");
+    const aaxtomp3 = spawn('./AAXtoMP3', ['--authcode', activationBytes, path]);
+
+    aaxtomp3.stdout.on('data', function(data) {
+        console.log('aaxtomp3 GOT STDOUT', data.toString());
+    });
+    aaxtomp3.stderr.on('data', function(data) {
+        console.log('aaxtomp3 GOT STDERR', data.toString());
+    });
+    aaxtomp3.on('close', function(code) {
+        console.log('aaxtomp3 close', code);
+    });
+}
+
+async function processChecksum(checksum, path) {
     process.chdir('tables');
 
     console.log("Computing activation bytes...");
@@ -86,6 +103,7 @@ async function processChecksum(checksum) {
 
     activationBytesPromise.then(function(activationBytes) {
         console.log(`Activation bytes: ${activationBytes}`);
+        processActivationBytes(activationBytes, path);
     });
 }
 
@@ -103,7 +121,7 @@ async function processFile(file) {
 
     checksumPromise.then(function(checksum) {
         console.log("Checksum from ffprobe", checksum);
-        processChecksum(checksum);
+        processChecksum(checksum, newPath);
     });
 }
 
