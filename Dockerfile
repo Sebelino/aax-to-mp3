@@ -52,9 +52,6 @@ EXPOSE 8081
 
 RUN apt-get -y install curl
 
-# Bundle app source
-COPY . .
-
 SHELL ["/bin/bash", "-c"]
 
 ENV NVM_DIR /root/.nvm
@@ -70,7 +67,9 @@ ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
-#CMD ["sleep", "1000"]
+# Bundle app source
+COPY . .
+
 CMD ["node", "server.js"]
 
 
