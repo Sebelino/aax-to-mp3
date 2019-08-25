@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:stretch
 
 RUN apt-get -y update
 RUN apt-get -y install yasm nasm \
@@ -7,8 +7,8 @@ RUN apt-get -y install yasm nasm \
                 intltool libxml2-dev libgtk2.0-dev \
                 libnotify-dev libglib2.0-dev libevent-dev \
                 wget \
-                checkinstall \
                 time
+RUN apt-get -y install checkinstall
 RUN wget https://www.ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2
 RUN tar jxvf ffmpeg-snapshot.tar.bz2
 RUN cd ffmpeg && \
@@ -19,8 +19,11 @@ RUN cd ffmpeg && \
 RUN dpkg --install ./ffmpeg/ffmpeg_*.deb
 
 RUN apt-get -y install git
+RUN apt-get -y install curl
+
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get -y install npm
-#RUN apt-get -y install nodejs
+RUN apt-get -y install nodejs
 
 #RUN echo "deb http://www.deb-multimedia.org jessie main non-free" >> /etc/apt/sources.list
 #RUN echo "deb-src http://www.deb-multimedia.org jessie main non-free" >> /etc/apt/sources.list
@@ -49,8 +52,6 @@ COPY package*.json ./
 RUN npm install
 
 EXPOSE 8081
-
-RUN apt-get -y install curl
 
 SHELL ["/bin/bash", "-c"]
 
