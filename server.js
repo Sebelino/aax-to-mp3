@@ -78,8 +78,17 @@ async function processChecksum(checksum) {
     });
 }
 
-async function processFile(path) {
-    const checksumPromise = getChecksum(path);
+async function processFile(file) {
+    const newPath = path.join("/tmp/", file.name)
+    fs.copyFileSync(file.path, newPath, function(err) {
+        if (err) {
+            console.log("COPIED FILE FAILED", err);
+        } else {
+            console.log("COPIED FILE SUCCESS!");
+        }
+    })
+
+    const checksumPromise = getChecksum(newPath);
 
     checksumPromise.then(function(checksum) {
         console.log("Checksum from ffprobe", checksum);
@@ -91,15 +100,7 @@ app.post('/submit-form', (req, res) => {
     new formidable.IncomingForm().parse(req)
     .on('file', (name, file) => {
         console.log('Uploaded file', name, file.name);
-        const newPath = path.join("/tmp/", file.name)
-        fs.copy(file.path, newPath, function(err) {
-            if (err) {
-                console.error(err);
-            } else {
-                console.log("copied file success!");
-            }
-        })
-        processFile(newPath);
+        processFile(file);
     })
     .on('aborted', () => {
         console.error('Request aborted by user');
