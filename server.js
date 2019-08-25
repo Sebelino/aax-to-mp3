@@ -57,11 +57,22 @@ async function getActivationBytes(checksum) {
         rcrack.stdout.pipe(grep.stdin);
         grep.stdout.pipe(sed.stdin);
 
+        rcrack.stdout.on('data', function(data) {
+            console.log('rcrack GOT STDOUT', data);
+        });
+        rcrack.stderr.on('data', function(data) {
+            console.log('rcrack GOT STDERR', data.toString());
+        });
+        rcrack.on('close', function(code) {
+            console.log('rcrack close', code);
+        });
+
         var activationBytes;
         sed.stdout.on('data', function(data) {
             activationBytes = data;
         });
         sed.on('close', function(code) {
+            console.log('sed code', code);
             resolve(activationBytes.toString().trim());
         });
     });
