@@ -4,6 +4,7 @@ const express = require('express');
 const formidable = require('formidable');
 const path = require('path');
 const fs = require('fs-extra');
+const util = require('util');
 const { exec, spawn } = require('child_process');
 const process = require('process');
 
@@ -19,6 +20,7 @@ if (!fs.existsSync(TMP_DIR)) {
     fs.mkdirSync(TMP_DIR);
 }
 
+const stream = fs.createWriteStream(path.join(TMP_DIR, "server.log"));
 const app = express();
 
 app.get('/', (req, res) => {
@@ -26,9 +28,14 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
+function output(string) {
+    console.log(string);
+    stream.write(string + "\n");
+}
+
 function getChecksum(path) {
     return new Promise((resolve, reject) => {
-        console.log("Processing file:", path);
+        output(util.format("Processing file:", path));
 
         const ffprobe = spawn('ffprobe', ['-loglevel', 'debug', path]);
         const grep = spawn('grep', ['checksum']);
@@ -39,15 +46,15 @@ function getChecksum(path) {
 
         var checksum;
         sed.stdout.on('data', function(data) {
-            console.log("sed GOT SOME DATA");
+            output(util.format("sed GOT SOME DATA"));
             checksum = data;
         });
         sed.on('close', function(code) {
-            console.log("sed close code", code);
+            output(util.format("sed close code", code));
             resolve(checksum.toString().trim());
         });
         sed.on('error', function(err) {
-            console.log("sed ONE MORE CALL REJECTED");
+            output(util.format("sed ONE MORE CALL REJECTED"));
             reject(err);
         });
     });
@@ -63,13 +70,13 @@ async function getActivationBytes(checksum) {
         grep.stdout.pipe(sed.stdin);
 
         rcrack.stdout.on('data', function(data) {
-            console.log('rcrack GOT STDOUT', data);
+            output(util.format('rcrack GOT STDOUT', data));
         });
         rcrack.stderr.on('data', function(data) {
-            console.log('rcrack GOT STDERR', data.toString());
+            output(util.format('rcrack GOT STDERR', data.toString()));
         });
         rcrack.on('close', function(code) {
-            console.log('rcrack close', code);
+            output(util.format('rcrack close', code));
         });
 
         var activationBytes;
@@ -77,7 +84,7 @@ async function getActivationBytes(checksum) {
             activationBytes = data;
         });
         sed.on('close', function(code) {
-            console.log('sed code', code);
+            output(util.format('sed code', code));
             resolve(activationBytes.toString().trim());
         });
     });
@@ -86,28 +93,28 @@ async function getActivationBytes(checksum) {
 async function processActivationBytes(activationBytes, path) {
     process.chdir('../AAXtoMP3');
 
-    console.log("Running AAXtoMp3...");
+    output(util.format("Running AAXtoMp3..."));
     const aaxtomp3 = spawn('./AAXtoMP3', ['--authcode', activationBytes, path]);
 
     aaxtomp3.stdout.on('data', function(data) {
-        console.log('aaxtomp3 GOT STDOUT', data.toString());
+        output(util.format('aaxtomp3 GOT STDOUT', data.toString()));
     });
     aaxtomp3.stderr.on('data', function(data) {
-        console.log('aaxtomp3 GOT STDERR', data.toString());
+        output(util.format('aaxtomp3 GOT STDERR', data.toString()));
     });
     aaxtomp3.on('close', function(code) {
-        console.log('aaxtomp3 close', code);
+        output(util.format('aaxtomp3 close', code));
     });
 }
 
 async function processChecksum(checksum, path) {
     process.chdir('tables');
 
-    console.log("Computing activation bytes...");
+    output(util.format("Computing activation bytes..."));
     const activationBytesPromise = getActivationBytes(checksum);
 
     activationBytesPromise.then(function(activationBytes) {
-        console.log(`Activation bytes: ${activationBytes}`);
+        output(util.format(`Activation bytes: ${activationBytes}`));
         processActivationBytes(activationBytes, path);
     });
 }
@@ -116,16 +123,16 @@ async function processFile(file) {
     const newPath = path.join(TMP_DIR, file.name)
     fs.copyFileSync(file.path, newPath, 0, function(err) {
         if (err) {
-            console.log("COPIED FILE FAILED", err);
+            output(util.format("COPIED FILE FAILED", err));
         } else {
-            console.log("COPIED FILE SUCCESS!");
+            output(util.format("COPIED FILE SUCCESS!"));
         }
     })
 
     const checksumPromise = getChecksum(newPath);
 
     checksumPromise.then(function(checksum) {
-        console.log("Checksum from ffprobe", checksum);
+        output(util.format("Checksum from ffprobe", checksum));
         processChecksum(checksum, newPath);
     });
 }
@@ -133,7 +140,7 @@ async function processFile(file) {
 app.post('/submit-form', (req, res) => {
     new formidable.IncomingForm().parse(req)
     .on('file', (name, file) => {
-        console.log('Uploaded file', name, file.name);
+        output(util.format('Uploaded file', name, file.name));
         processFile(file);
     })
     .on('aborted', () => {
@@ -150,4 +157,4 @@ app.post('/submit-form', (req, res) => {
 })
 
 app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
+output(util.format(`Running on http://${HOST}:${PORT}`));
