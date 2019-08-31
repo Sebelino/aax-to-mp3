@@ -9,10 +9,15 @@ const process = require('process');
 
 const PORT = 8081;
 const HOST = '0.0.0.0';
+const TMP_DIR = '/tmp/aax2mp3/';
 
 process.on('SIGINT', function() {
     process.exit();
 })
+
+if (!fs.existsSync(TMP_DIR)) {
+    fs.mkdirSync(TMP_DIR);
+}
 
 const app = express();
 
@@ -108,8 +113,8 @@ async function processChecksum(checksum, path) {
 }
 
 async function processFile(file) {
-    const newPath = path.join("/tmp/", file.name)
-    fs.copyFileSync(file.path, newPath, function(err) {
+    const newPath = path.join(TMP_DIR, file.name)
+    fs.copyFileSync(file.path, newPath, 0, function(err) {
         if (err) {
             console.log("COPIED FILE FAILED", err);
         } else {
