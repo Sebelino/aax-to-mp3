@@ -24,7 +24,6 @@ const stream = fs.createWriteStream(path.join(TMP_DIR, "server.log"));
 const app = express();
 
 app.get('/', (req, res) => {
-    //res.send('Hello world\n');
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
