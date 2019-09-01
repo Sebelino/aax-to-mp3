@@ -8,6 +8,7 @@ const util = require('util');
 const { exec, spawn } = require('child_process');
 const process = require('process');
 const webSocket = require('ws');
+const rimraf = require('rimraf');
 
 const PORT = 8081;
 const WS_PORT = 8087;
@@ -21,9 +22,10 @@ process.on('SIGINT', function() {
     process.exit();
 })
 
-if (!fs.existsSync(TMP_DIR)) {
-    fs.mkdirSync(TMP_DIR);
+if (fs.existsSync(TMP_DIR)) {
+    rimraf.sync(TMP_DIR);
 }
+fs.mkdirSync(TMP_DIR);
 
 const stream = fs.createWriteStream(path.join(TMP_DIR, "server.log"));
 const app = express();
