@@ -127,7 +127,7 @@ async function processFile(file) {
         } else {
             output(util.format("COPIED FILE SUCCESS!"));
         }
-    })
+    });
 
     const checksumPromise = getChecksum(newPath);
 
@@ -154,7 +154,7 @@ app.post('/submit-form', (req, res) => {
         console.error('Ending');
         res.end()
     })
-})
+});
 
 app.listen(PORT, HOST);
 output(util.format(`Running on http://${HOST}:${PORT}`));
