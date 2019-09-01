@@ -7,10 +7,15 @@ const fs = require('fs-extra');
 const util = require('util');
 const { exec, spawn } = require('child_process');
 const process = require('process');
+const webSocket = require('ws');
 
 const PORT = 8081;
+const WS_PORT = 8087;
 const HOST = '0.0.0.0';
 const TMP_DIR = '/tmp/aax2mp3/';
+const JQUERY_FILE = "jquery-3.4.1.min.js";
+
+var globalWs = null;
 
 process.on('SIGINT', function() {
     process.exit();
@@ -23,6 +28,8 @@ if (!fs.existsSync(TMP_DIR)) {
 const stream = fs.createWriteStream(path.join(TMP_DIR, "server.log"));
 const app = express();
 
+app.use('/static', express.static('public'));
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
@@ -30,6 +37,10 @@ app.get('/', (req, res) => {
 function output(string) {
     console.log(string);
     stream.write(string + "\n");
+    if (globalWs !== null) {
+        console.log("GLOBALWS WAS NOT NULL!!!!!!!!!!!!!!!!!!!!!!!!");
+        globalWs.send(`${string}`);
+    }
 }
 
 function getChecksum(path) {
@@ -102,7 +113,7 @@ async function processActivationBytes(activationBytes, path) {
         output(util.format('aaxtomp3 GOT STDERR', data.toString()));
     });
     aaxtomp3.on('close', function(code) {
-        output(util.format('aaxtomp3 close', code));
+        output(util.format('aaxtomp3 closed with exit code', code));
     });
 }
 
@@ -119,6 +130,9 @@ async function processChecksum(checksum, path) {
 }
 
 async function processFile(file) {
+    // Give WebSockets some time to connect
+    await new Promise(done => setTimeout(done, 100));
+
     const newPath = path.join(TMP_DIR, file.name)
     fs.copyFileSync(file.path, newPath, 0, function(err) {
         if (err) {
@@ -136,6 +150,20 @@ async function processFile(file) {
     });
 }
 
+const wss = new webSocket.Server({
+    port: WS_PORT
+});
+
+wss.on('connection', ws => {
+    console.log('ON CONNECTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    ws.on('message', message => {
+        console.log(`Received message => ${message} ${i}`);
+    });
+    ws.send('hoy from server')
+
+    globalWs = ws;
+});
+
 app.post('/submit-form', (req, res) => {
     new formidable.IncomingForm().parse(req)
     .on('file', (name, file) => {
@@ -150,8 +178,7 @@ app.post('/submit-form', (req, res) => {
         throw err
     })
     .on('end', () => {
-        console.error('Ending');
-        res.end()
+        res.end(fs.readFileSync(__dirname + "/submit-form.html"));
     })
 });
 
