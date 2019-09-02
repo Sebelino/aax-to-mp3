@@ -5,7 +5,7 @@ const formidable = require('formidable');
 const path = require('path');
 const fs = require('fs-extra');
 const util = require('util');
-const { exec, spawn } = require('child_process');
+const {exec, spawn} = require('child_process');
 const process = require('process');
 const webSocket = require('ws');
 const rimraf = require('rimraf');
@@ -18,7 +18,7 @@ const JQUERY_FILE = "jquery-3.4.1.min.js";
 
 let globalWs = null;
 
-process.on('SIGINT', function() {
+process.on('SIGINT', function () {
     process.exit();
 });
 
@@ -61,15 +61,15 @@ function getChecksum(path) {
         grep.stdout.pipe(sed.stdin);
 
         var checksum;
-        sed.stdout.on('data', function(data) {
+        sed.stdout.on('data', function (data) {
             output(util.format("sed GOT SOME DATA"));
             checksum = data;
         });
-        sed.on('close', function(code) {
+        sed.on('close', function (code) {
             output(util.format("sed closed with exit code", code));
             resolve(checksum.toString().trim());
         });
-        sed.on('error', function(err) {
+        sed.on('error', function (err) {
             output(util.format("sed ONE MORE CALL REJECTED"));
             reject(err);
         });
@@ -85,21 +85,21 @@ async function getActivationBytes(checksum) {
         rcrack.stdout.pipe(grep.stdin);
         grep.stdout.pipe(sed.stdin);
 
-        rcrack.stdout.on('data', function(data) {
+        rcrack.stdout.on('data', function (data) {
             output(util.format('rcrack GOT STDOUT', data));
         });
-        rcrack.stderr.on('data', function(data) {
+        rcrack.stderr.on('data', function (data) {
             output(util.format('rcrack GOT STDERR', data.toString()));
         });
-        rcrack.on('close', function(code) {
+        rcrack.on('close', function (code) {
             output(util.format('rcrack closed with exit code', code));
         });
 
         var activationBytes;
-        sed.stdout.on('data', function(data) {
+        sed.stdout.on('data', function (data) {
             activationBytes = data;
         });
-        sed.on('close', function(code) {
+        sed.on('close', function (code) {
             output(util.format('sed code', code));
             resolve(activationBytes.toString().trim());
         });
@@ -112,13 +112,13 @@ async function processActivationBytes(activationBytes, path) {
     output(util.format("Running AAXtoMp3..."));
     const aaxtomp3 = spawn('./AAXtoMP3', ['--authcode', activationBytes, path]);
 
-    aaxtomp3.stdout.on('data', function(data) {
+    aaxtomp3.stdout.on('data', function (data) {
         output(util.format('aaxtomp3 GOT STDOUT', data.toString()));
     });
-    aaxtomp3.stderr.on('data', function(data) {
+    aaxtomp3.stderr.on('data', function (data) {
         output(util.format('aaxtomp3 GOT STDERR', data.toString()));
     });
-    aaxtomp3.on('close', function(code) {
+    aaxtomp3.on('close', function (code) {
         output(util.format('aaxtomp3 closed with exit code', code));
     });
 }
@@ -129,7 +129,7 @@ async function processChecksum(checksum, path) {
     output(util.format("Computing activation bytes -- please wait..."));
     const activationBytesPromise = getActivationBytes(checksum);
 
-    activationBytesPromise.then(function(activationBytes) {
+    activationBytesPromise.then(function (activationBytes) {
         output(util.format(`Activation bytes: ${activationBytes}`));
         processActivationBytes(activationBytes, path);
     });
@@ -140,7 +140,7 @@ async function processFile(file) {
     await new Promise(done => setTimeout(done, 100));
 
     const newPath = path.join(TMP_DIR, file.name)
-    fs.copyFileSync(file.path, newPath, 0, function(err) {
+    fs.copyFileSync(file.path, newPath, 0, function (err) {
         if (err) {
             output(util.format("COPIED FILE FAILED", err));
         } else {
@@ -150,7 +150,7 @@ async function processFile(file) {
 
     const checksumPromise = getChecksum(newPath);
 
-    checksumPromise.then(function(checksum) {
+    checksumPromise.then(function (checksum) {
         output(util.format("Checksum from ffprobe:", checksum));
         processChecksum(checksum, newPath);
     });
@@ -172,20 +172,20 @@ wss.on('connection', ws => {
 
 app.post('/submit-form', (req, res) => {
     new formidable.IncomingForm().parse(req)
-    .on('file', (name, file) => {
-        output(util.format('Uploaded file', name, file.name));
-        processFile(file);
-    })
-    .on('aborted', () => {
-        console.error('Request aborted by user');
-    })
-    .on('error', (err) => {
-        console.error('Error', err);
-        throw err
-    })
-    .on('end', () => {
-        res.redirect("/output/")
-    })
+        .on('file', (name, file) => {
+            output(util.format('Uploaded file', name, file.name));
+            processFile(file);
+        })
+        .on('aborted', () => {
+            console.error('Request aborted by user');
+        })
+        .on('error', (err) => {
+            console.error('Error', err);
+            throw err
+        })
+        .on('end', () => {
+            res.redirect("/output/")
+        })
 });
 
 app.listen(PORT, HOST);
