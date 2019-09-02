@@ -36,6 +36,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('/output/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'output.html'));
+});
+
 function output(string) {
     console.log(string);
     stream.write(string + "\n");
@@ -180,7 +184,7 @@ app.post('/submit-form', (req, res) => {
         throw err
     })
     .on('end', () => {
-        res.end(fs.readFileSync(__dirname + "/submit-form.html"));
+        res.redirect("/output/")
     })
 });
 
