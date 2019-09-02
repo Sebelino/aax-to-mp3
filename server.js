@@ -139,7 +139,7 @@ async function processFile(file) {
     // Give WebSockets some time to connect
     await new Promise(done => setTimeout(done, 100));
 
-    const newPath = path.join(TMP_DIR, file.name)
+    const newPath = path.join(TMP_DIR, file.name);
     fs.copyFileSync(file.path, newPath, 0);
 
     const checksumPromise = getChecksum(newPath);
