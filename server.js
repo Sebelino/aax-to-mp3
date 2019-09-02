@@ -62,7 +62,7 @@ function getChecksum(path) {
             checksum = data;
         });
         sed.on('close', function(code) {
-            output(util.format("sed close code", code));
+            output(util.format("sed closed with exit code", code));
             resolve(checksum.toString().trim());
         });
         sed.on('error', function(err) {
@@ -88,7 +88,7 @@ async function getActivationBytes(checksum) {
             output(util.format('rcrack GOT STDERR', data.toString()));
         });
         rcrack.on('close', function(code) {
-            output(util.format('rcrack close', code));
+            output(util.format('rcrack closed with exit code', code));
         });
 
         var activationBytes;
@@ -122,7 +122,7 @@ async function processActivationBytes(activationBytes, path) {
 async function processChecksum(checksum, path) {
     process.chdir('tables');
 
-    output(util.format("Computing activation bytes..."));
+    output(util.format("Computing activation bytes -- please wait..."));
     const activationBytesPromise = getActivationBytes(checksum);
 
     activationBytesPromise.then(function(activationBytes) {
@@ -147,7 +147,7 @@ async function processFile(file) {
     const checksumPromise = getChecksum(newPath);
 
     checksumPromise.then(function(checksum) {
-        output(util.format("Checksum from ffprobe", checksum));
+        output(util.format("Checksum from ffprobe:", checksum));
         processChecksum(checksum, newPath);
     });
 }
