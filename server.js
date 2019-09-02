@@ -76,7 +76,7 @@ function getChecksum(path) {
 }
 
 async function getActivationBytes(checksum) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         const rcrack = spawn('./rcrack', ['.', '-h', checksum]);
         const grep = spawn('grep', ['hex:']);
         const sed = spawn('sed', ['s/.*hex:\\(\\w\\+\\)/\\1/']);
