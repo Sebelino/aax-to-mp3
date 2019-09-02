@@ -16,7 +16,7 @@ const HOST = '0.0.0.0';
 const TMP_DIR = '/tmp/aax2mp3/';
 const JQUERY_FILE = "jquery-3.4.1.min.js";
 
-var globalWs = null;
+let globalWs = null;
 
 process.on('SIGINT', function() {
     process.exit();
