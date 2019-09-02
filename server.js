@@ -163,7 +163,7 @@ const wss = new webSocket.Server({
 wss.on('connection', ws => {
     console.log('ON CONNECTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     ws.on('message', message => {
-        console.log(`Received message => ${message} ${i}`);
+        console.log(`Received message => ${message}`);
     });
     ws.send('hoy from server');
 
