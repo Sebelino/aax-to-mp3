@@ -20,7 +20,7 @@ let globalWs = null;
 
 process.on('SIGINT', function() {
     process.exit();
-})
+});
 
 if (fs.existsSync(TMP_DIR)) {
     rimraf.sync(TMP_DIR);
@@ -57,8 +57,8 @@ function getChecksum(path) {
         const grep = spawn('grep', ['checksum']);
         const sed = spawn('sed', ['s/.*checksum == \\(\\w\\+\\)/\\1/']);
 
-        ffprobe.stderr.pipe(grep.stdin)
-        grep.stdout.pipe(sed.stdin)
+        ffprobe.stderr.pipe(grep.stdin);
+        grep.stdout.pipe(sed.stdin);
 
         var checksum;
         sed.stdout.on('data', function(data) {
@@ -165,7 +165,7 @@ wss.on('connection', ws => {
     ws.on('message', message => {
         console.log(`Received message => ${message} ${i}`);
     });
-    ws.send('hoy from server')
+    ws.send('hoy from server');
 
     globalWs = ws;
 });
