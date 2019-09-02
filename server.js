@@ -14,7 +14,6 @@ const PORT = 8081;
 const WS_PORT = 8087;
 const HOST = '0.0.0.0';
 const TMP_DIR = '/tmp/aax2mp3/';
-const JQUERY_FILE = "jquery-3.4.1.min.js";
 
 let globalWs = null;
 
