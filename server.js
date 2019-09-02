@@ -60,7 +60,7 @@ function getChecksum(path) {
         ffprobe.stderr.pipe(grep.stdin);
         grep.stdout.pipe(sed.stdin);
 
-        var checksum;
+        let checksum;
         sed.stdout.on('data', function (data) {
             output(util.format("sed GOT SOME DATA"));
             checksum = data;
@@ -95,7 +95,7 @@ async function getActivationBytes(checksum) {
             output(util.format('rcrack closed with exit code', code));
         });
 
-        var activationBytes;
+        let activationBytes;
         sed.stdout.on('data', function (data) {
             activationBytes = data;
         });
