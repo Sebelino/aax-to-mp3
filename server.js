@@ -140,13 +140,7 @@ async function processFile(file) {
     await new Promise(done => setTimeout(done, 100));
 
     const newPath = path.join(TMP_DIR, file.name)
-    fs.copyFileSync(file.path, newPath, 0, function (err) {
-        if (err) {
-            output(util.format("COPIED FILE FAILED", err));
-        } else {
-            output(util.format("COPIED FILE SUCCESS!"));
-        }
-    });
+    fs.copyFileSync(file.path, newPath, 0);
 
     const checksumPromise = getChecksum(newPath);
 
