@@ -1,5 +1,5 @@
 
-const url = 'ws://localhost:8087'
+const url = 'ws://localhost:8087';
 
 console.log("ok creating a websocket");
 
@@ -13,7 +13,7 @@ connection.onopen = () => {
 
 connection.onerror = (error) => {
     console.log(`WebSocket error: ${error}`);
-}
+};
 
 connection.onmessage = (e) => {
     console.log("client entered onmessage");
@@ -22,4 +22,4 @@ connection.onmessage = (e) => {
     $("#content").append(
         $("<tr><td>").text(e.data)
     );
-}
+};
