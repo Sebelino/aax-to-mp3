@@ -28,30 +28,12 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get -y install npm
 RUN apt-get -y install nodejs
 
-#RUN echo "deb http://www.deb-multimedia.org jessie main non-free" >> /etc/apt/sources.list
-#RUN echo "deb-src http://www.deb-multimedia.org jessie main non-free" >> /etc/apt/sources.list
-#RUN echo "deb http://httpredir.debian.org/debian/ jessie-backports main" >> /etc/apt/sources.list
-#RUN apt-get update -oAcquire::AllowInsecureRepositories=true
-#RUN apt-get install deb-multimedia-keyring
-#RUN apt-get update -oAcquire::AllowInsecureRepositories=true
-#RUN apt-get install ffmpeg
-
-#RUN apt-get install git
-#RUN apt install bash
-#RUN apt-get install file
-#RUN apt-get install glibc
-
 WORKDIR /usr/src/app
 
 RUN git clone https://github.com/inAudible-NG/tables
 RUN git clone https://github.com/KrumpetPirate/AAXtoMP3
 
 COPY package*.json ./
-
-# Install latest stable version
-#RUN npm cache clean
-#RUN npm install -g n
-#RUN n stable
 
 RUN npm install
 
