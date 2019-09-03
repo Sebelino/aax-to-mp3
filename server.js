@@ -186,7 +186,7 @@ const wss = new webSocket.Server({
 });
 
 wss.on('connection', ws => {
-    console.log('Server: Connection established');
+    output('Server: Connection established');
     ws.on('message', message => {
         console.log(`Received message => ${message}`);
     });
