@@ -1,7 +1,13 @@
 # aax-to-mp3
 Simple dockerized Node.js web service for converting an AAX file into an MP3 file.
 
-# Installation
+# Installation (Docker Hub)
+Install [Docker](https://www.docker.com/), then pull the image like so:
+```
+$ docker pull sebelino/aax-to-mp3
+```
+
+# Installation (Manual)
 Install [Docker](https://www.docker.com/), then build the image like so:
 ```
 $ git clone git@github.com:Sebelino/aax-to-mp3
