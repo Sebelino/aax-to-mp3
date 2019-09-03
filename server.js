@@ -110,11 +110,11 @@ async function getActivationBytes(checksum) {
 }
 
 async function processMp3Files() {
-    // TODO softcode
-    const author = "Stephen Haunts";
-    const title = "A Gentle Introduction to Agile and Lean Software Development";
+    const outdir = "Audiobook";
+    const author = fs.readdirSync(path.join(TMP_DIR, outdir))[0];
+    const title = fs.readdirSync(path.join(TMP_DIR, outdir, author))[0];
 
-    process.chdir(path.join(TMP_DIR, "Audiobook", author, title));
+    process.chdir(path.join(TMP_DIR, outdir, author, title));
 
     const mp3Files = glob.sync("*.mp3");
     const inputstring = "concat:" + mp3Files.join("|");
