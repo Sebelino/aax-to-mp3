@@ -1,4 +1,3 @@
-
 const url = 'ws://localhost:8087';
 
 console.log("ok creating a websocket");
