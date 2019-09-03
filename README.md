@@ -10,7 +10,7 @@ Then fire up http://localhost:8082/ in your browser.
 
 ![Usage example](https://user-images.githubusercontent.com/837775/64194974-a7ed6700-ce80-11e9-8f7d-63fa09c1fafc.png)
 
-Select your AAX file and click `Convert`. It should take roughly 5 minutes for the file to be processed.
+Select your AAX file and click `Convert`. The whole conversion should take 5-10 minutes.
 
 The MP3 file will be downloaded when processing is complete.
 
