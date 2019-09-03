@@ -39,6 +39,10 @@ app.get('/output/', (req, res) => {
     res.sendFile(path.join(__dirname, 'output.html'));
 });
 
+app.get('/download/', (req, res) => {
+    res.download(path.join(TMP_DIR, "Audiobook/Stephen\ Haunts/A\ Gentle\ Introduction\ to\ Agile\ and\ Lean\ Software\ Development/A\ Gentle\ Introduction\ to\ Agile\ and\ Lean\ Software\ Development-01\ Chapter\ 1.mp3"));
+});
+
 function output(string) {
     console.log(string);
     stream.write(string + "\n");
@@ -118,6 +122,7 @@ async function processActivationBytes(activationBytes, path) {
     });
     aaxtomp3.on('close', function (code) {
         output(util.format('aaxtomp3 closed with exit code', code));
+        output('link http://localhost:8081/download');
     });
 }
 

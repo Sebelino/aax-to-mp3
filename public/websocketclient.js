@@ -19,6 +19,12 @@ connection.onmessage = (e) => {
     console.log("client entered onmessage");
     console.log(e.data);
 
+    const words = e.data.split(' ');
+
+    if (words[0] === "link") {
+        window.location = words[1];
+    }
+
     $("#content").append(
         $("<tr><td>").text(e.data)
     );
