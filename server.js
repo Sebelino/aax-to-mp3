@@ -132,7 +132,7 @@ async function processMp3Files() {
     ffmpeg.on('close', function (code) {
         output(util.format('ffmpeg closed with exit code', code));
         fs.copyFileSync(outputfile, path.join(TMP_DIR, outputfile), 0);
-        output('link http://localhost:8081/download');
+        output('link /download');
     });
 }
 
