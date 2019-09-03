@@ -41,7 +41,7 @@ app.get('/output/', (req, res) => {
 });
 
 app.get('/download/', (req, res) => {
-    res.download(path.join(TMP_DIR, "Audiobook/Stephen\ Haunts/A\ Gentle\ Introduction\ to\ Agile\ and\ Lean\ Software\ Development/A\ Gentle\ Introduction\ to\ Agile\ and\ Lean\ Software\ Development-01\ Chapter\ 1.mp3"));
+    res.download(path.join(TMP_DIR, "audiobook.mp3"));
 });
 
 function output(string) {
@@ -118,9 +118,10 @@ async function processMp3Files() {
 
     const mp3Files = glob.sync("*.mp3");
     const inputstring = "concat:" + mp3Files.join("|");
+    const outputfile = "audiobook.mp3";
 
     output(util.format("Concatenating mp3 files..."));
-    const ffmpeg = spawn('ffmpeg', ['-i', inputstring, '-acodec', 'copy', 'output.mp3']);
+    const ffmpeg = spawn('ffmpeg', ['-i', inputstring, '-acodec', 'copy', outputfile]);
 
     ffmpeg.stdout.on('data', function (data) {
         output(util.format('ffmpeg GOT STDOUT', data.toString()));
@@ -130,6 +131,7 @@ async function processMp3Files() {
     });
     ffmpeg.on('close', function (code) {
         output(util.format('ffmpeg closed with exit code', code));
+        fs.copyFileSync(outputfile, path.join(TMP_DIR, outputfile), 0);
         output('link http://localhost:8081/download');
     });
 }
