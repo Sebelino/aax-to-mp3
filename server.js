@@ -65,7 +65,7 @@ function getChecksum(path) {
 
         let checksum;
         sed.stdout.on('data', function (data) {
-            output(util.format("sed GOT SOME DATA"));
+            output(util.format("sed stdout:"));
             checksum = data;
         });
         sed.on('close', function (code) {
@@ -73,7 +73,7 @@ function getChecksum(path) {
             resolve(checksum.toString().trim());
         });
         sed.on('error', function (err) {
-            output(util.format("sed ONE MORE CALL REJECTED"));
+            output(util.format("sed encountered an error"));
             reject(err);
         });
     });
@@ -89,10 +89,10 @@ async function getActivationBytes(checksum) {
         grep.stdout.pipe(sed.stdin);
 
         rcrack.stdout.on('data', function (data) {
-            output(util.format('rcrack GOT STDOUT', data));
+            output(util.format('rcrack stdout:', data));
         });
         rcrack.stderr.on('data', function (data) {
-            output(util.format('rcrack GOT STDERR', data.toString()));
+            output(util.format('rcrack stderr:', data.toString()));
         });
         rcrack.on('close', function (code) {
             output(util.format('rcrack closed with exit code', code));
@@ -124,10 +124,10 @@ async function processMp3Files() {
     const ffmpeg = spawn('ffmpeg', ['-i', inputstring, '-acodec', 'copy', outputfile]);
 
     ffmpeg.stdout.on('data', function (data) {
-        output(util.format('ffmpeg GOT STDOUT', data.toString()));
+        output(util.format('ffmpeg stdout:', data.toString()));
     });
     ffmpeg.stderr.on('data', function (data) {
-        output(util.format('ffmpeg GOT STDERR', data.toString()));
+        output(util.format('ffmpeg stderr:', data.toString()));
     });
     ffmpeg.on('close', function (code) {
         output(util.format('ffmpeg closed with exit code', code));
@@ -143,10 +143,10 @@ async function processActivationBytes(activationBytes, path) {
     const aaxtomp3 = spawn('./AAXtoMP3', ['--authcode', activationBytes, path]);
 
     aaxtomp3.stdout.on('data', function (data) {
-        output(util.format('aaxtomp3 GOT STDOUT', data.toString()));
+        output(util.format('aaxtomp3 stdout:', data.toString()));
     });
     aaxtomp3.stderr.on('data', function (data) {
-        output(util.format('aaxtomp3 GOT STDERR', data.toString()));
+        output(util.format('aaxtomp3 stderr:', data.toString()));
     });
     aaxtomp3.on('close', function (code) {
         output(util.format('aaxtomp3 closed with exit code', code));
@@ -186,11 +186,11 @@ const wss = new webSocket.Server({
 });
 
 wss.on('connection', ws => {
-    console.log('ON CONNECTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log('Server: Connection established');
     ws.on('message', message => {
         console.log(`Received message => ${message}`);
     });
-    ws.send('hoy from server');
+    ws.send('Server: Hello.');
 
     globalWs = ws;
 });
