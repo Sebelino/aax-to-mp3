@@ -12,6 +12,8 @@ Select your AAX file and click `Convert`. It should take roughly 5 minutes for t
 
 The MP3 file will be downloaded when processing is complete.
 
+![Usage example](https://user-images.githubusercontent.com/837775/64194974-a7ed6700-ce80-11e9-8f7d-63fa09c1fafc.png)
+
 ## Manual installation
 Install [Docker](https://www.docker.com/), then build the image yourself:
 ```
