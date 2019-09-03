@@ -43,7 +43,6 @@ function output(string) {
     console.log(string);
     stream.write(string + "\n");
     if (globalWs !== null) {
-        console.log("GLOBALWS WAS NOT NULL!!!!!!!!!!!!!!!!!!!!!!!!");
         globalWs.send(`${string}`);
     }
 }
