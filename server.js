@@ -9,6 +9,7 @@ const {spawn} = require('child_process');
 const process = require('process');
 const webSocket = require('ws');
 const rimraf = require('rimraf');
+const glob = require('glob');
 
 const PORT = 8081;
 const WS_PORT = 8087;
@@ -108,6 +109,31 @@ async function getActivationBytes(checksum) {
     });
 }
 
+async function processMp3Files() {
+    // TODO softcode
+    const author = "Stephen Haunts";
+    const title = "A Gentle Introduction to Agile and Lean Software Development";
+
+    process.chdir(path.join(TMP_DIR, "Audiobook", author, title));
+
+    const mp3Files = glob.sync("*.mp3");
+    const inputstring = "concat:" + mp3Files.join("|");
+
+    output(util.format("Concatenating mp3 files..."));
+    const ffmpeg = spawn('ffmpeg', ['-i', inputstring, '-acodec', 'copy', 'output.mp3']);
+
+    ffmpeg.stdout.on('data', function (data) {
+        output(util.format('ffmpeg GOT STDOUT', data.toString()));
+    });
+    ffmpeg.stderr.on('data', function (data) {
+        output(util.format('ffmpeg GOT STDERR', data.toString()));
+    });
+    ffmpeg.on('close', function (code) {
+        output(util.format('ffmpeg closed with exit code', code));
+        output('link http://localhost:8081/download');
+    });
+}
+
 async function processActivationBytes(activationBytes, path) {
     process.chdir('../AAXtoMP3');
 
@@ -122,7 +148,7 @@ async function processActivationBytes(activationBytes, path) {
     });
     aaxtomp3.on('close', function (code) {
         output(util.format('aaxtomp3 closed with exit code', code));
-        output('link http://localhost:8081/download');
+        processMp3Files();
     });
 }
 
