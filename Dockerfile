@@ -33,7 +33,7 @@ WORKDIR /usr/src/app
 RUN git clone https://github.com/Sebelino/tables
 RUN git clone https://github.com/Sebelino/AAXtoMP3
 
-COPY package*.json ./
+COPY package.json package-lock.json ./
 
 RUN npm install
 
