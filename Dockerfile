@@ -57,7 +57,8 @@ RUN apt-get -y install bc
 EXPOSE 8081 8087
 
 # Bundle app source
-COPY . .
+COPY index.html output.html server.js ./
+COPY public/ public/
 
 CMD ["node", "server.js"]
 
