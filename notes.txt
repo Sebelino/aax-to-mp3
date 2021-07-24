@@ -1,6 +1,12 @@
 
 Milestones:
 
+* Follow https://cloud.google.com/gcp/getting-started#quick-starts
+    * Create a Linux VM
+    * Store a File and Share It
+    * Deploy a Docker Container Image
+    * Deploy a Python application on App Engine
+
 * Make it accessible on public internet (only to you)
     - docker run on GCP instance
 * Migrate it into GKE
@@ -22,6 +28,7 @@ Notes:
 * Jaeger
 * Logging
 * Grafana
+* Bigquery
 * IaC
 * CI pipeline
 * Push- vs. pull-based CD pipeline
