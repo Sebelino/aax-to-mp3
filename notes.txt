@@ -7,6 +7,8 @@ Milestones:
     * Deploy a Docker Container Image
     * Deploy a Python application on App Engine
 
+* Setup/teardown a GCP instance via terraform
+
 * Make it accessible on public internet (only to you)
     - docker run on GCP instance
 * Migrate it into GKE
