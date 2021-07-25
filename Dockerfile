@@ -54,7 +54,7 @@ ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 RUN apt-get -y install bc
 
-EXPOSE 8081 8087
+EXPOSE 80 8080
 
 # Bundle app source
 COPY index.html output.html server.js ./

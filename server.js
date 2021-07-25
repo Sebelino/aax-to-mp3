@@ -11,8 +11,8 @@ const webSocket = require('ws');
 const rimraf = require('rimraf');
 const glob = require('glob');
 
-const PORT = 8081;
-const WS_PORT = 8087;
+const PORT = 80;
+const WS_PORT = 8080;
 const HOST = '0.0.0.0';
 const TMP_DIR = '/tmp/aax2mp3/';
 

@@ -1,4 +1,4 @@
-const url = 'ws://localhost:8087';
+const url = 'ws://localhost:8080';
 
 console.log("ok creating a websocket");
 
