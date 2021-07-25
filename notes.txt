@@ -8,6 +8,9 @@ Milestones:
     * Deploy a Docker Container Image
     * Deploy a Python application on App Engine
 
+* Try using shared port for HTTP and WS:
+    - https://stackoverflow.com/a/34838031
+
 * Setup/teardown a GCP instance via terraform
 
 * Make it accessible on public internet (only to you)
