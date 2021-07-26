@@ -20,6 +20,7 @@ Milestones:
 
 Notes:
 * DDD -> Break into microservices
+* Make docker image smaller
 * Captcha/imnotarobot
 * GKE
 * Caching of generated mp3 files
