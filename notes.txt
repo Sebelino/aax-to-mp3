@@ -4,7 +4,7 @@ Milestones:
 * Follow https://cloud.google.com/gcp/getting-started#quick-starts
     ` Create a Linux VM
     ` Create a Linux VM with docker image checked
-    * Store a File and Share It
+    ` Store a File and Share It
     * Deploy a Docker Container Image
     * Deploy a Python application on App Engine
 
