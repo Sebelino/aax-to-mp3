@@ -6,7 +6,7 @@ Milestones:
     ` Create a Linux VM with docker image checked
     ` Store a File and Share It
     ` Deploy a Docker Container Image to GKE
-    * Deploy a Python application on App Engine
+    ` Deploy a Python application on App Engine
 
 * Try using shared port for HTTP and WS:
     - https://stackoverflow.com/a/34838031
