@@ -8,10 +8,11 @@ Milestones:
     ` Deploy a Docker Container Image to GKE
     ` Deploy a Python application on App Engine
 
+* Setup/teardown a GKE cluster via terraform
+* Automate creating aax2mp3 deployment in cluster
+
 * Try using shared port for HTTP and WS:
     - https://stackoverflow.com/a/34838031
-
-* Setup/teardown a GCP instance via terraform
 
 * Make it accessible on public internet (only to you)
     - docker run on GCP instance
