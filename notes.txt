@@ -1,13 +1,14 @@
 
 Milestones:
 
-* Follow https://cloud.google.com/gcp/getting-started#quick-starts
+` Follow https://cloud.google.com/gcp/getting-started#quick-starts
     ` Create a Linux VM
     ` Create a Linux VM with docker image checked
     ` Store a File and Share It
     ` Deploy a Docker Container Image to GKE
     ` Deploy a Python application on App Engine
 
+` Setup/teardown a GCE instance via terraform
 * Setup/teardown a GKE cluster via terraform
 * Automate creating aax2mp3 deployment in cluster
 
