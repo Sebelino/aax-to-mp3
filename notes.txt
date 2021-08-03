@@ -10,9 +10,10 @@ Milestones:
 
 ` Setup/teardown a GCE instance via terraform
 ` Setup/teardown a GKE cluster via terraform
+* Connect Cloud Source Repositories <-> Github repository
 * Automate creating aax2mp3 deployment in cluster
-    * Start with push-based CD: https://faun.pub/gitops-comparison-pull-and-push-88fcbaadfe45
-    * Set up pull-based CD: https://medium.com/google-cloud/how-to-apply-gitops-cd-with-gke-and-cloud-build-in-5-minutes-58455a2bf063
+    * Start with push-based CD (kinda): https://cloud.google.com/kubernetes-engine/docs/tutorials/gitops-cloud-build
+    * Set up pull-based CD
 
 * Try using shared port for HTTP and WS:
     - https://stackoverflow.com/a/34838031
