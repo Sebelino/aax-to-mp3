@@ -1,9 +1,9 @@
 FROM debian:stretch
 
-RUN apt-get -y update
-RUN apt-get -y install curl
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get -y install \
+RUN apt-get -y update && \
+    apt-get -y install curl && \
+    curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+    apt-get -y install \
     yasm \
     nasm \
     build-essential \
