@@ -19,14 +19,13 @@ RUN apt-get -y install \
     libglib2.0-dev \
     libevent-dev \
     wget \
-    time
-RUN apt-get -y install checkinstall
-RUN apt-get -y install libmp3lame-dev
-RUN apt-get -y install git
-RUN apt-get -y install npm
-RUN apt-get -y install nodejs
-
-RUN apt-get -y install bc
+    time \
+    checkinstall \
+    libmp3lame-dev \
+    git \
+    npm \
+    nodejs \
+    bc
 
 RUN wget https://www.ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2
 RUN tar jxvf ffmpeg-snapshot.tar.bz2
