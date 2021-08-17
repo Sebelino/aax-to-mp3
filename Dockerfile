@@ -1,13 +1,23 @@
 FROM debian:stretch
 
 RUN apt-get -y update
-RUN apt-get -y install yasm nasm \
-                build-essential automake autoconf \
-                libtool pkg-config libcurl4-openssl-dev \
-                intltool libxml2-dev libgtk2.0-dev \
-                libnotify-dev libglib2.0-dev libevent-dev \
-                wget \
-                time
+RUN apt-get -y install \
+    yasm \
+    nasm \
+    build-essential \
+    automake \
+    autoconf \
+    libtool \
+    pkg-config \
+    libcurl4-openssl-dev \
+    intltool \
+    libxml2-dev \
+    libgtk2.0-dev \
+    libnotify-dev \
+    libglib2.0-dev \
+    libevent-dev \
+    wget \
+    time
 RUN apt-get -y install checkinstall
 
 RUN apt-get -y install libmp3lame-dev
