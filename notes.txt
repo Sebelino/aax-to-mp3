@@ -12,6 +12,10 @@ Milestones:
 ` Setup/teardown a GKE cluster via terraform
 ` Connect Cloud Source Repositories <-> Github repository
 ` Follow this tutorial: https://cloud.google.com/kubernetes-engine/docs/tutorials/gitops-cloud-build
+
+* Optimize apt-gets
+* Optimize with multistage builds?
+
 * Automate creating aax2mp3 deployment in cluster
     * Start with push-based CD
         * Create aax2mp3-env repo: https://cloud.google.com/build/docs/automating-builds/build-repos-from-github?authuser=1
