@@ -19,8 +19,15 @@ RUN apt-get -y install \
     wget \
     time
 RUN apt-get -y install checkinstall
-
 RUN apt-get -y install libmp3lame-dev
+RUN apt-get -y install git
+RUN apt-get -y install curl
+
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN apt-get -y install npm
+RUN apt-get -y install nodejs
+
+RUN apt-get -y install bc
 
 RUN wget https://www.ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2
 RUN tar jxvf ffmpeg-snapshot.tar.bz2
@@ -30,13 +37,6 @@ RUN cd ffmpeg && \
     cat RELEASE && \
     checkinstall
 RUN dpkg --install ./ffmpeg/ffmpeg_*.deb
-
-RUN apt-get -y install git
-RUN apt-get -y install curl
-
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get -y install npm
-RUN apt-get -y install nodejs
 
 WORKDIR /usr/src/app
 
@@ -61,8 +61,6 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | ba
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
-
-RUN apt-get -y install bc
 
 EXPOSE 80 8080
 
