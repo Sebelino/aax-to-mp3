@@ -1,6 +1,8 @@
 FROM debian:stretch
 
 RUN apt-get -y update
+RUN apt-get -y install curl
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get -y install \
     yasm \
     nasm \
@@ -21,9 +23,6 @@ RUN apt-get -y install \
 RUN apt-get -y install checkinstall
 RUN apt-get -y install libmp3lame-dev
 RUN apt-get -y install git
-RUN apt-get -y install curl
-
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get -y install npm
 RUN apt-get -y install nodejs
 
