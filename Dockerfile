@@ -25,7 +25,8 @@ RUN apt-get -y update && \
     git \
     npm \
     nodejs \
-    bc
+    bc && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN wget https://www.ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2
 RUN tar jxvf ffmpeg-snapshot.tar.bz2
