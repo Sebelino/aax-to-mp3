@@ -6,5 +6,5 @@ steps:
   - '-t'
   - 'gcr.io/$PROJECT_ID/aax-to-mp3:$SHORT_SHA'
   - '.'
-  timeout: 30m
-timeout: 30m
+  timeout: 50m
+timeout: 50m
