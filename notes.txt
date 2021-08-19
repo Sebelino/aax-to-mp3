@@ -22,7 +22,7 @@ Milestones:
 
 * Set up pull-based CD
 
-* Try using shared port for HTTP and WS:
+` Try using shared port for HTTP and WS:
     - https://stackoverflow.com/a/34838031
 
 * Make it accessible on public internet (only to you)
