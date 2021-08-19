@@ -61,7 +61,7 @@ ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
-EXPOSE 80 8080
+EXPOSE 80
 
 # Bundle app source
 COPY index.html output.html server.js ./

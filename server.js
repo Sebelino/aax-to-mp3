@@ -10,9 +10,9 @@ const process = require('process');
 const webSocket = require('ws');
 const rimraf = require('rimraf');
 const glob = require('glob');
+const server = require('http').createServer();
 
 const PORT = 80;
-const WS_PORT = 8080;
 const HOST = '0.0.0.0';
 const TMP_DIR = '/tmp/aax2mp3/';
 
@@ -182,8 +182,10 @@ async function processFile(file) {
 }
 
 const wss = new webSocket.Server({
-    port: WS_PORT
+    server: server
 });
+
+server.on('request', app);
 
 wss.on('connection', ws => {
     output('Server: Connection established');
@@ -213,5 +215,8 @@ app.post('/submit-form', (req, res) => {
         })
 });
 
-app.listen(PORT, HOST);
+server.listen(PORT, function() {
+    console.log(`http/ws server listening on ${PORT}`);
+});
+
 output(util.format(`Running on http://${HOST}:${PORT}`));

@@ -4,7 +4,7 @@ Simple dockerized Node.js web service for converting an AAX file into an MP3 fil
 ## Usage
 Install [Docker](https://www.docker.com/), then run:
 ```
-$ docker run -p 80:80 -p 8080:8080 sebelino/aax-to-mp3
+$ docker run -p 80:80 sebelino/aax-to-mp3
 ```
 Then fire up http://localhost/ in your browser.
 
