@@ -1,10 +1,9 @@
 steps:
-- name: 'gcr.io/cloud-builders/docker'
+- name: 'gcr.io/kaniko-project/executor'
   id: Build
   args:
-  - 'build'
-  - '-t'
-  - 'gcr.io/$PROJECT_ID/aax-to-mp3:$SHORT_SHA'
-  - '.'
+  - --destination=gcr.io/$PROJECT_ID/aax-to-mp3:$SHORT_SHA
+  - --cache=true
+  - --cache-ttl=72h
   timeout: 50m
 timeout: 50m
