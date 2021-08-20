@@ -34,8 +34,10 @@ RUN cd ffmpeg && \
     ./configure --prefix=/usr --enable-gpl --enable-libmp3lame --enable-shared && \
     time make -j 8 && \
     cat RELEASE && \
-    checkinstall
-RUN dpkg --install ./ffmpeg/ffmpeg_*.deb
+    checkinstall && \
+    cd .. && \
+    dpkg --install ./ffmpeg/ffmpeg_*.deb && \
+    rm -r ./ffmpeg/
 
 WORKDIR /usr/src/app
 
