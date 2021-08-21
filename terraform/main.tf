@@ -39,3 +39,17 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
     ]
   }
 }
+
+resource "google_cloudbuild_trigger" "filename_trigger" {
+  name = "tf-build-and-push-image"
+  description = "Terraformed trigger for building an image and pushing it to Container Registry"
+  github {
+    owner = "Sebelino"
+    name = "aax-to-mp3"
+    push {
+      branch = "master"
+    }
+  }
+
+  filename = "cloudbuild.yaml"
+}
