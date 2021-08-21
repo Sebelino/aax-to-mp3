@@ -28,9 +28,9 @@ RUN apt-get -y update && \
     bc && \
     rm -rf /var/lib/apt/lists/*
 
-RUN wget https://www.ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2
-RUN tar jxvf ffmpeg-snapshot.tar.bz2
-RUN cd ffmpeg && \
+RUN wget https://www.ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2 && \
+    tar jxvf ffmpeg-snapshot.tar.bz2 && \
+    cd ffmpeg && \
     ./configure --prefix=/usr --enable-gpl --enable-libmp3lame --enable-shared && \
     time make -j 8 && \
     cat RELEASE && \
