@@ -47,7 +47,7 @@ resource "google_cloudbuild_trigger" "filename_trigger" {
     owner = "Sebelino"
     name = "aax-to-mp3"
     push {
-      branch = "master"
+      branch = "^master$"
     }
   }
 
