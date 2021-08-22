@@ -13,6 +13,8 @@ Milestones:
 ` Connect Cloud Source Repositories <-> Github repository
 ` Follow this tutorial: https://cloud.google.com/kubernetes-engine/docs/tutorials/gitops-cloud-build
 
+* Create repository manager: https://wahlnetwork.com/2020/09/01/using-terraform-to-manage-git-repositories/
+
 * Terraform github-cloudbuild webhook
 
 ` Optimize apt-gets
