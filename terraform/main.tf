@@ -23,12 +23,13 @@ resource "google_container_cluster" "primary" {
   location                 = "europe-west1"
   remove_default_node_pool = true
   initial_node_count       = 1
+  count                    = var.create_gke_cluster ? 1 : 0
 }
 
 resource "google_container_node_pool" "primary_preemptible_nodes" {
   name       = "my-node-pool"
   location   = "europe-west1"
-  cluster    = google_container_cluster.primary.name
+  cluster    = google_container_cluster.primary[0].name
   node_count = 1
   node_config {
     preemptible     = true
@@ -38,14 +39,15 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
       "https://www.googleapis.com/auth/cloud-platform"
     ]
   }
+  count = var.create_gke_cluster ? 1 : 0
 }
 
 resource "google_cloudbuild_trigger" "filename_trigger" {
-  name = "tf-build-and-push-image"
+  name        = "tf-build-and-push-image"
   description = "Terraformed trigger for building an image and pushing it to Container Registry"
   github {
     owner = "Sebelino"
-    name = "aax-to-mp3"
+    name  = "aax-to-mp3"
     push {
       branch = "^master$"
     }
