@@ -15,7 +15,8 @@ Milestones:
 
 ` Create repository manager: https://wahlnetwork.com/2020/09/01/using-terraform-to-manage-git-repositories/
 
-* Terraform github-cloudbuild webhook
+` Terraform github-cloudbuild webhook
+    - Doesn't seem to be possible currently (except for GH orgs, kinda)
 
 ` Optimize apt-gets
 * Optimize with multistage builds?
