@@ -1,5 +1,5 @@
 # aax-to-mp3
-Simple dockerized Node.js web service for converting an AAX file into an MP3 file.
+Simple dockerized Node.js web service for converting an Audible AAX file into an MP3 file.
 
 ## Usage
 Install [Docker](https://www.docker.com/), then run:
