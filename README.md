@@ -21,3 +21,10 @@ $ git clone git@github.com:Sebelino/aax-to-mp3
 $ cd aax-to-mp3
 $ docker build -t sebelino/aax-to-mp3 .
 ```
+
+## Notes
+Get checksum:
+```bash
+$ docker run -v /tmp/aax2mp3:/tmp/aax2mp3 aax-to-mp3 ffprobe -loglevel debug /tmp/aax2mp3/sample.aax 1>/dev/null 2>&1 | grep checksum | sed 's/.*checksum == \(\w\+\)/\1/'
+a83ff00cb34b25efd48fcc0719805f302325ec90
+```
