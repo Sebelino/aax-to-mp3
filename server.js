@@ -12,7 +12,7 @@ const rimraf = require('rimraf');
 const glob = require('glob');
 const server = require('http').createServer();
 
-const PORT = 80;
+const PORT = process.env.AAX_TO_MP3_PORT || 80;
 const HOST = '0.0.0.0';
 const TMP_DIR = '/tmp/aax2mp3/';
 
@@ -198,7 +198,10 @@ wss.on('connection', ws => {
 });
 
 app.post('/submit-form', (req, res) => {
-    new formidable.IncomingForm().parse(req)
+    const options = {
+        maxFileSize: 20 * 1024 * 1024 * 1024 // 20GB
+    }
+    new formidable.IncomingForm(options).parse(req)
         .on('file', (name, file) => {
             output(util.format('Uploaded file', name, file.name));
             processFile(file);
