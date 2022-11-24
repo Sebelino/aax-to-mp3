@@ -198,7 +198,10 @@ wss.on('connection', ws => {
 });
 
 app.post('/submit-form', (req, res) => {
-    new formidable.IncomingForm().parse(req)
+    const options = {
+        maxFileSize: 20 * 1024 * 1024 * 1024 // 20GB
+    }
+    new formidable.IncomingForm(options).parse(req)
         .on('file', (name, file) => {
             output(util.format('Uploaded file', name, file.name));
             processFile(file);
