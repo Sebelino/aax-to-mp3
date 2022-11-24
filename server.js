@@ -12,7 +12,7 @@ const rimraf = require('rimraf');
 const glob = require('glob');
 const server = require('http').createServer();
 
-const PORT = 80;
+const PORT = process.env.AAX_TO_MP3_PORT || 80;
 const HOST = '0.0.0.0';
 const TMP_DIR = '/tmp/aax2mp3/';
 
