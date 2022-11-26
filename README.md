@@ -8,7 +8,7 @@ $ docker run -p 80:80 sebelino/aax-to-mp3
 ```
 Then fire up http://localhost/ in your browser.
 
-![Usage example](https://user-images.githubusercontent.com/837775/64194974-a7ed6700-ce80-11e9-8f7d-63fa09c1fafc.png)
+![Usage example](https://user-images.githubusercontent.com/837775/204081687-34001d41-1c44-4e06-82e2-ecf4cb095586.png)
 
 Select your AAX file and click `Convert`. The whole conversion should take 5-10 minutes.
 
