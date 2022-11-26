@@ -6,7 +6,7 @@ Install [Docker](https://www.docker.com/), then run:
 ```
 $ docker run -p 80:80 sebelino/aax-to-mp3
 ```
-Then fire up http://localhost/ in your browser.
+Then fire up http://localhost:80/ in your browser.
 
 ![Usage example](https://user-images.githubusercontent.com/837775/204081687-34001d41-1c44-4e06-82e2-ecf4cb095586.png)
 
