@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim@sha256:1acb06a0c31fb467eb8327ad361f1091ab265e0bf26d452dea45dcb0c0ea5e75
+FROM debian:unstable-20230109-slim@sha256:69e10d7ba95513185b0e650e8f8f1c36152c7d35ae7baee43585a29f652ccf7a
 
 RUN apt-get -y update && \
     apt-get -y install \
