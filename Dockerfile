@@ -1,8 +1,7 @@
-FROM debian:stretch-slim
+FROM debian:bullseye-slim@sha256:1acb06a0c31fb467eb8327ad361f1091ab265e0bf26d452dea45dcb0c0ea5e75
 
 RUN apt-get -y update && \
     apt-get -y install curl && \
-    curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
     apt-get -y install \
     yasm \
     nasm \
