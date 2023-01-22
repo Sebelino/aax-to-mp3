@@ -55,8 +55,3 @@ COPY index.html output.html server.js ./
 COPY public/ public/
 
 CMD ["node", "server.js"]
-
-
-
-
-
