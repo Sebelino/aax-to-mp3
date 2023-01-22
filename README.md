@@ -25,6 +25,6 @@ $ docker build -t sebelino/aax-to-mp3 .
 ## Notes
 Get checksum:
 ```bash
-$ docker run -v /tmp/aax2mp3:/tmp/aax2mp3 sebelino/aax-to-mp3:latest ffprobe -loglevel debug /tmp/aax2mp3/sample.aax 1>/dev/null 2>&1 | grep checksum | sed 's/.*checksum == \(\w\+\)/\1/'
+$ docker run -p 80:80 -v /tmp/book:/data -it sebelino/aax-to-mp3:dev bash -c "ffprobe -loglevel debug /data/sample.aax 2>&1 | grep checksum | sed 's/.*checksum == \(\w\+\)/\1/'"
 a83ff00cb34b25efd48fcc0719805f302325ec90
 ```
