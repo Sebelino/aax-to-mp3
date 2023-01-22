@@ -48,19 +48,6 @@ RUN npm install
 
 SHELL ["/bin/bash", "-c"]
 
-ENV NVM_DIR /root/.nvm
-ENV NODE_VERSION 12.9.0
-RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
-        && source $NVM_DIR/nvm.sh \
-        && nvm install $NODE_VERSION \
-        && nvm alias default $NODE_VERSION \
-        && nvm use default
-
-# TODO not sure if this path is right
-ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
-
-ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
-
 EXPOSE 80
 
 # Bundle app source
