@@ -18,6 +18,7 @@ RUN apt-get -y update && \
     libnotify-dev \
     libglib2.0-dev \
     libevent-dev \
+    mediainfo \
     wget \
     time \
     checkinstall \
