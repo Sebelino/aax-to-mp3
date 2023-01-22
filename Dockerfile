@@ -22,16 +22,25 @@ RUN apt-get -y update && \
     time \
     checkinstall \
     libmp3lame-dev \
-    git \
     npm \
     nodejs \
+    unzip \
     bc && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
 
-RUN git clone https://github.com/Sebelino/tables
-RUN git clone https://github.com/Sebelino/AAXtoMP3
+ENV TABLES_SHA     1d7389a8fba5764fb80f40898e8f647567ca2dda
+ENV AAX_TO_MP3_SHA 2ef05cda0055663c65c65967e62a9402ad285861
+
+RUN wget https://github.com/Sebelino/tables/archive/$TABLES_SHA.zip && \
+    unzip $TABLES_SHA.zip && \
+    mv tables-$TABLES_SHA tables && \
+    rm $TABLES_SHA.zip
+RUN wget https://github.com/Sebelino/AAXtoMP3/archive/$AAX_TO_MP3_SHA.zip && \
+    unzip $AAX_TO_MP3_SHA.zip && \
+    mv AAXtoMP3-$AAX_TO_MP3_SHA AAXtoMP3 && \
+    rm $AAX_TO_MP3_SHA.zip
 
 COPY package.json package-lock.json ./
 
