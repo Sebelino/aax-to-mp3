@@ -1,8 +1,8 @@
 FROM debian:bullseye-slim@sha256:1acb06a0c31fb467eb8327ad361f1091ab265e0bf26d452dea45dcb0c0ea5e75
 
 RUN apt-get -y update && \
-    apt-get -y install curl && \
     apt-get -y install \
+    curl \
     yasm \
     nasm \
     build-essential \
