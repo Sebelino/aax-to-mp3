@@ -31,7 +31,7 @@ RUN apt-get -y update && \
 WORKDIR /usr/src/app
 
 ENV TABLES_SHA     1d7389a8fba5764fb80f40898e8f647567ca2dda
-ENV AAX_TO_MP3_SHA 2ef05cda0055663c65c65967e62a9402ad285861
+ENV AAX_TO_MP3_SHA 1544a8924971223fe5bce068f66949bb7d4f7128
 
 RUN wget https://github.com/Sebelino/tables/archive/$TABLES_SHA.zip && \
     unzip $TABLES_SHA.zip && \
