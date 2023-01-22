@@ -8,6 +8,7 @@ RUN apt-get -y update && \
     build-essential \
     automake \
     autoconf \
+    ffmpeg \
     libtool \
     pkg-config \
     libcurl4-openssl-dev \
@@ -26,17 +27,6 @@ RUN apt-get -y update && \
     nodejs \
     bc && \
     rm -rf /var/lib/apt/lists/*
-
-RUN wget https://www.ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2 && \
-    tar jxvf ffmpeg-snapshot.tar.bz2 && \
-    cd ffmpeg && \
-    ./configure --prefix=/usr --enable-gpl --enable-libmp3lame --enable-shared && \
-    time make -j 8 && \
-    cat RELEASE && \
-    checkinstall && \
-    cd .. && \
-    dpkg --install ./ffmpeg/ffmpeg_*.deb && \
-    rm -r ./ffmpeg/
 
 WORKDIR /usr/src/app
 
