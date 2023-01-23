@@ -26,6 +26,7 @@ RUN apt-get -y update && \
     npm \
     nodejs \
     unzip \
+    jq \
     bc && \
     rm -rf /var/lib/apt/lists/*
 
