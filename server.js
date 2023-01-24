@@ -15,6 +15,7 @@ const server = require('http').createServer();
 const PORT = process.env.AAX_TO_MP3_PORT || 80;
 const HOST = '0.0.0.0';
 const TMP_DIR = '/tmp/aax2mp3/';
+const WORKDIR = '/usr/src/app';
 
 let globalWs = null;
 
@@ -154,6 +155,24 @@ async function processActivationBytes(activationBytes, path) {
     });
 }
 
+async function processWithoutActivationBytes(path) {
+    process.chdir('./AAXtoMP3');
+
+    output(util.format("Running AAXtoMp3 without activation bytes..."));
+    const aaxtomp3 = spawn('./AAXtoMP3', [path]);
+
+    aaxtomp3.stdout.on('data', function (data) {
+        output(util.format('aaxtomp3 stdout:', data.toString()));
+    });
+    aaxtomp3.stderr.on('data', function (data) {
+        output(util.format('aaxtomp3 stderr:', data.toString()));
+    });
+    aaxtomp3.on('close', function (code) {
+        output(util.format('aaxtomp3 closed with exit code', code));
+        processMp3Files();
+    });
+}
+
 async function processChecksum(checksum, path) {
     process.chdir('tables');
 
@@ -170,15 +189,28 @@ async function processFile(file) {
     // Give WebSockets some time to connect
     await new Promise(done => setTimeout(done, 100));
 
+    process.chdir(WORKDIR); // Switch back to the workdir in case pwd has changed
+
     const newPath = path.join(TMP_DIR, file.name);
     fs.copyFileSync(file.path, newPath, 0);
 
-    const checksumPromise = getChecksum(newPath);
+    const extension = path.extname(file.name)
 
-    checksumPromise.then(function (checksum) {
-        output(util.format("Checksum from ffprobe:", checksum));
-        processChecksum(checksum, newPath);
-    });
+    if (extension === ".aaxc") {
+        output("Processing AAXC file...");
+        processWithoutActivationBytes(newPath);
+    } else if (extension === ".voucher" || extension === ".json" || extension === ".jpg") {
+        output(util.format(`Got ${extension} file. I am going to assume it will be used for converting an AAXC file.`));
+    } else if (extension === ".aax") {
+        output("Processing AAX file...");
+        const checksumPromise = getChecksum(newPath);
+        checksumPromise.then(function (checksum) {
+            output(util.format("Checksum from ffprobe:", checksum));
+            processChecksum(checksum, newPath);
+        });
+    } else {
+        output(util.format(`Expected a file with any of the extensions ['.aax', '.aaxc', '.voucher', 'json', 'voucher'], got: ${extension}`));
+    }
 }
 
 const wss = new webSocket.Server({
