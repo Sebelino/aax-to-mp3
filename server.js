@@ -18,6 +18,11 @@ const TMP_DIR = '/tmp/aax2mp3/';
 const WORKDIR = '/usr/src/app';
 const SERVER_LOG_PATH = path.join(TMP_DIR, "server.log")
 
+const getDirectories = source => fs
+    .readdirSync(source, {withFileTypes: true})
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name)
+
 let globalWs = null;
 
 process.on('SIGINT', function () {
@@ -112,7 +117,8 @@ async function getActivationBytes(checksum) {
 }
 
 async function processMp3Files() {
-    const outdir = "Audiobook";
+    const outdir = getDirectories(TMP_DIR)[0];
+    output(util.format("Outdir:", outdir));
     const author = fs.readdirSync(path.join(TMP_DIR, outdir))[0];
     const title = fs.readdirSync(path.join(TMP_DIR, outdir, author))[0];
 
