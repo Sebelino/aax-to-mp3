@@ -16,6 +16,7 @@ const PORT = process.env.AAX_TO_MP3_PORT || 80;
 const HOST = '0.0.0.0';
 const TMP_DIR = '/tmp/aax2mp3/';
 const WORKDIR = '/usr/src/app';
+const SERVER_LOG_PATH = path.join(TMP_DIR, "server.log")
 
 let globalWs = null;
 
@@ -28,7 +29,7 @@ if (fs.existsSync(TMP_DIR)) {
 }
 fs.mkdirSync(TMP_DIR);
 
-const stream = fs.createWriteStream(path.join(TMP_DIR, "server.log"));
+const stream = fs.createWriteStream(SERVER_LOG_PATH);
 const app = express();
 
 app.use('/static', express.static('public'));
