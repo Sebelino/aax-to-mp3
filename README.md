@@ -14,7 +14,7 @@ Then fire up http://localhost:80/ in your browser.
 
 Click the upload button, select your `.aax` file, and click `Convert`. The whole conversion should take 5-10 minutes, depending on how large your file is.
 
-An MP3 file named `audiobook.mp3` will be downloaded when processing is complete.
+An MP3 file named `audiobook.mp3` will be downloaded when processing is complete. If not, enter `http://localhost:80/download/` into the address bar and the file should be downloaded.
 
 ### Convert AAXC
 
